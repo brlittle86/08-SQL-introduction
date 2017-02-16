@@ -1,3 +1,5 @@
+// Collaborated with Castro, Morgan, and Eve to do these
+
 'use strict';
 
 function Article(opts) {
@@ -124,17 +126,17 @@ Article.truncateTable = function (callback) {
 
 // ++++++++++++++++++++++++++++++++++++++
 
-// TODO
+// DONE
 /**
- * OVERVIEW of
- * - Describe what the method does
- * - Inputs: identify any inputs and their source
- * - Outputs: identify any outputs and their destination
+ * OVERVIEW of Article.prototype.insertRecord
+ * - It adds new data to the SQL DB table
+ * - Inputs: an Article object instance
+ * - Outputs: logs insertion to table as successful
  */
 Article.prototype.insertRecord = function (callback) {
-  // TODO: describe what the following code is doing
+  // DONE: sends an instance of an Article object to the /articles location on the DB
   $.post('/articles', { author: this.author, authorUrl: this.authorUrl, body: this.body, category: this.category, publishedOn: this.publishedOn, title: this.title })
-    // TODO: describe what the following code is doing
+    // DONE: log the Article data and check for a callback function then invoke it if it exists
     .then(function (data) {
       console.log(data);
       if (callback) callback();
@@ -143,20 +145,20 @@ Article.prototype.insertRecord = function (callback) {
 
 // ++++++++++++++++++++++++++++++++++++++
 
-// TODO
+// DONE
 /**
- * OVERVIEW of
- * - Describe what the method does
- * - Inputs: identify any inputs and their source
- * - Outputs: identify any outputs and their destination
+ * OVERVIEW of Article.prototype.deleteRecord
+ * - This method on the Article proto makes an AJAX HTTP request on an article of a particular ID and deletes it. After the AJAX call completes, the data that was deleted is logged, and if a callback function has been passed as an argument, it will run.
+ * - Inputs: the instance of Article this is being called on
+ * - Outputs: console log of the data
  */
 Article.prototype.deleteRecord = function (callback) {
-  // TODO: describe what the following code is doing
+  // DONE: makes an AJAX request on an article with a particular ID and deletes it from the table
   $.ajax({
     url: `/articles/${this.article_id}`,
     method: 'DELETE'
   })
-    // TODO: describe what the following code is doing
+    // DONE: logs data and checks if a callback function has been passed and runs it if that is true
     .then(function (data) {
       console.log(data);
       if (callback) callback();
@@ -165,19 +167,19 @@ Article.prototype.deleteRecord = function (callback) {
 
 // ++++++++++++++++++++++++++++++++++++++
 
-// TODO
+// DONE
 /**
- * OVERVIEW of
- * - Describe what the method does
- * - Inputs: identify any inputs and their source
- * - Outputs: identify any outputs and their destination
+ * OVERVIEW of Article.prototype.updateRecord
+ * - Describe what the method does: This method attaches a prototype of updateRecord to Article.  It uses AJAX to get a particular article id and puts the data listed into the table it then checks if a callback function has been passed and runs it if it exists.
+ * - Inputs: article id and the data from the Article function
+ * - Outputs: the data added to the table
  */
 Article.prototype.updateRecord = function (callback) {
-  // TODO: describe what the following code is doing
+  // DONE: AJAX call accessing at the particular article instance's id and updating the data listed below into the table
   $.ajax({
     url: `/articles/${this.article_id}`,
     method: 'PUT',
-    data: {  // TODO: describe what this object is doing
+    data: {  // DONE: this is giving the properties of the below data to be updated in the table
       author: this.author,
       authorUrl: this.authorUrl,
       body: this.body,
@@ -186,9 +188,9 @@ Article.prototype.updateRecord = function (callback) {
       title: this.title
     }
   })
-    // TODO: describe what the following code is doing
+    // DONE: This is indicating that after the above is inputted into the table then log the data added and if the callback function is there, run the callback function
     .then(function (data) {
       console.log(data);
       if (callback) callback();
     });
-};
+}; 
