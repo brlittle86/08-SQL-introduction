@@ -18,21 +18,21 @@ client.connect();
 
 // REVIEW: Install the middleware plugins so that our app is aware and can use the body-parser module
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('./public'));
 
 
 // NOTE: Routes for requesting HTML resources
-app.get('/', function(request, response) {
-  response.sendFile('index.html', {root: '.'});
+app.get('/', function (request, response) {
+  response.sendFile('index.html', { root: '.' });
 });
 
-app.get('/new', function(request, response) {
-  response.sendFile('new.html', {root: '.'});
+app.get('/new', function (request, response) {
+  response.sendFile('new.html', { root: '.' });
 });
 
 // NOTE: Routes for making API calls to enact CRUD Operations on our database
-app.get('/articles', function(request, response) {
+app.get('/articles', function (request, response) {
   client.query(`
     CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
@@ -43,13 +43,13 @@ app.get('/articles', function(request, response) {
       "publishedOn" DATE,
       body TEXT NOT NULL);`
   )
-  client.query('SELECT * FROM articles', function(err, result) { // Make a request to the DB
+  client.query('SELECT * FROM articles', function (err, result) { // Make a request to the DB
     if (err) console.error(err);
     response.send(result.rows);
   });
 });
 
-app.post('/articles', function(request, response) {
+app.post('/articles', function (request, response) {
   client.query(
     `INSERT INTO
     articles(title, author, "authorUrl", category, "publishedOn", body)
@@ -67,7 +67,7 @@ app.post('/articles', function(request, response) {
   response.send('insert complete');
 });
 
-app.put('/articles/:id', function(request, response) {
+app.put('/articles/:id', function (request, response) {
   client.query(
     `UPDATE articles(title, author, "authorUrl", category, "publishedOn", body)
     WHERE article_id = ${this.article_id}
@@ -84,7 +84,7 @@ app.put('/articles/:id', function(request, response) {
   response.send('update complete');
 });
 
-app.delete('/articles/:id', function(request, response) {
+app.delete('/articles/:id', function (request, response) {
   client.query(
     `DELETE FROM articles
     WHERE article_id = $1;`, // DONE: Write the SQL query to delete a record
@@ -93,13 +93,13 @@ app.delete('/articles/:id', function(request, response) {
   response.send('Delete complete');
 });
 
-app.delete('/articles', function(request, response) {
+app.delete('/articles', function (request, response) {
   client.query(
     'DELETE FROM articles;' // DONE: Write the SQl query to truncate the table
   );
   response.send('Delete complete');
 });
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}!`);
 });

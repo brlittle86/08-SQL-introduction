@@ -75,30 +75,30 @@ Article.fetchAll = function (callback) {
   $.get('/articles')
     // DONE: Once the /articles selector has been called, then it begins a function with an if/else statement taking the results as its argument
     .then(
-    function (results) {
-      if (results.length) { // If records exist in the DB
+      function (results) {
+        if (results.length) { // If records exist in the DB
         // DONE: if records exist in the DB, feed them into the Article.loadAll method and then invokes articleView.initIndexPage method through the callback alias
-        Article.loadAll(results);
-        callback();
-      } else { // if NO records exist in the DB
+          Article.loadAll(results);
+          callback();
+        } else { // if NO records exist in the DB
         // DONE: pull the records from the static file hackerIpsum.json, then push those records into the DB
-        $.getJSON('./data/hackerIpsum.json')
-          .then(function (rawData) {
-            rawData.forEach(function (item) {
-              let article = new Article(item);
-              article.insertRecord(); // Add each record to the DB
+          $.getJSON('./data/hackerIpsum.json')
+            .then(function (rawData) {
+              rawData.forEach(function (item) {
+                let article = new Article(item);
+                article.insertRecord(); // Add each record to the DB
+              })
             })
-          })
           // DONE: following creating the data in the DB, circle back around and call the fetchAll method with the intent of triggering the 'if' result
-          .then(function () {
-            Article.fetchAll(callback);
-          })
+            .then(function () {
+              Article.fetchAll(callback);
+            })
           // DONE: if the output is something other than what is covered in the if/else, throw an error and log it to the console
-          .catch(function (err) {
-            console.error(err);
-          });
+            .catch(function (err) {
+              console.error(err);
+            });
+        }
       }
-    }
     )
 };
 
